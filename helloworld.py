@@ -3,8 +3,11 @@ from flask import Flask
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
+def hello():
     return 'Hello, World!'
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    # Use Waitress as the production WSGI server
+    # Listen on port 8000
+    from waitress import serve
+    serve(app, host='0.0.0.0', port=8000)
