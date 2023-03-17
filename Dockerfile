@@ -1,4 +1,4 @@
-# Use an official Python runtime as a parent image
+# Use the official Python image as the base image
 FROM python:3.9-slim-buster
 
 # Set the working directory to /app
@@ -10,12 +10,11 @@ COPY requirements.txt .
 # Install the required packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the app code to the working directory
+# Copy the rest of the application code to the working directory
 COPY . .
 
-# Expose port 8000 for Gunicorn
+# Expose port 8000 for the Waitress server to listen on
 EXPOSE 8000
 
-# Start Gunicorn with 4 worker processes
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "myapp:app"]
-
+# Start the Waitress server using the entrypoint command
+ENTRYPOINT ["waitress-serve", "--port=8000", "myapp:app"]
